@@ -70,6 +70,12 @@ class collectd::setup::settings {
       $libmicrohttpd = 'libmicrohttpd10'
     }
 
+    if defined('$varnish_version') and versioncmp($varnish_version, '6' ) < 0 {
+      $varnishdeps       = ['$libvarnishapi1']
+    }else{
+      $varnishdeps       = []
+    }
+
     $plugindeps = {
       'amqp'             => ['librabbitmq0'],
       'apache'           => ['libcurl3-gnutls'],
@@ -116,7 +122,7 @@ class collectd::setup::settings {
       'snmp'             => ['libsnmp15'],
       'tokyotyrant'      => ['libtokyotyrant3'],
       'uuid'             => ['libdbus-1-3', 'libhal1'],
-      'varnish'          => ['libvarnishapi1'],
+      'varnish'          => $varnishdeps,
       'virt'             => ['libvirt0', 'libxml2'],
       'write_http'       => ['libcurl3-gnutls'],
       'write_kafka'      => ['librdkafka1'],
